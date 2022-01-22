@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 800px;
+  font-size: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+}
+
+.calculations {
+  display: grid;
+
+  width: 80%;
+  border: 6px solid black;
+  margin: 12px 0;
+  padding: 6px;
+}
+
+.running-calculation {
+  font-size: 24px;
+  margin: 4px;
+  border-bottom: 1px solid black;
+}
