@@ -1,153 +1,80 @@
 'use strict';
-const banana = function () {
-  var newReleases = [
-    {
-      id: 70111470,
-      title: 'Die Hard',
-      boxart: 'http://cdn-0.nflximg.com/images/2891/DieHard.jpg',
-      uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-      rating: [4.0],
-      bookmark: [],
-    },
-    {
-      id: 654356453,
-      title: 'Bad Boys',
-      boxart: 'http://cdn-0.nflximg.com/images/2891/BadBoys.jpg',
-      uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-      rating: [5.0],
-      bookmark: [{ id: 432534, time: 65876586 }],
-    },
-    {
-      id: 65432445,
-      title: 'The Chamber',
-      boxart: 'http://cdn-0.nflximg.com/images/2891/TheChamber.jpg',
-      uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-      rating: [4.0],
-      bookmark: [],
-    },
-    {
-      id: 675465,
-      title: 'Fracture',
-      boxart: 'http://cdn-0.nflximg.com/images/2891/Fracture.jpg',
-      uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-      rating: [5.0],
-      bookmark: [{ id: 432534, time: 65876586 }],
-    },
-  ];
-  // videoAndTitlePairs = [];
-
-  //   newReleases.forEach(t => {
-  //     videoAndTitlePairs.push({ id: t.id, title: t.title });
-  //   });
-  //   console.log(videoAndTitlePairs);
-  // return videoAndTitlePairs
-
-  //   return newReleases.map(t => {
-  //     return { id: t.id, title: t.title };
-  //   });
-
-  return newReleases.filter(t => t.rating == 5.0).map(t => t.id);
+const add = (number1, number2) => {
+  return number1 + number2;
 };
-banana();
-
-const cucumber = function () {
-  var movieLists = [
-      {
-        name: 'New Releases',
-        videos: [
-          {
-            id: 70111470,
-            title: 'Die Hard',
-            boxart: 'http://cdn-0.nflximg.com/images/2891/DieHard.jpg',
-            uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-            rating: 4.0,
-            bookmark: [],
-          },
-          {
-            id: 654356453,
-            title: 'Bad Boys',
-            boxart: 'http://cdn-0.nflximg.com/images/2891/BadBoys.jpg',
-            uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-            rating: 5.0,
-            bookmark: [{ id: 432534, time: 65876586 }],
-          },
-        ],
-      },
-      {
-        name: 'Dramas',
-        videos: [
-          {
-            id: 65432445,
-            title: 'The Chamber',
-            boxart: 'http://cdn-0.nflximg.com/images/2891/TheChamber.jpg',
-            uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-            rating: 4.0,
-            bookmark: [],
-          },
-          {
-            id: 675465,
-            title: 'Fracture',
-            boxart: 'http://cdn-0.nflximg.com/images/2891/Fracture.jpg',
-            uri: 'http://api.netflix.com/catalog/titles/movies/70111470',
-            rating: 5.0,
-            bookmark: [{ id: 432534, time: 65876586 }],
-          },
-        ],
-      },
-    ],
-    allVideoIdsInMovieLists = [];
-
-  // ------------   INSERT CODE HERE!  -----------------------------------
-  // Use two nested forEach loops to flatten the movieLists into a list of
-  // video ids.
-  // ------------   INSERT CODE HERE!  -----------------------------------
-
-  //   movieLists.forEach(movie =>
-  //     movie.videos.forEach(title => allVideoIdsInMovieLists.push(title.id))
-  //   );
-  //   return allVideoIdsInMovieLists;
+const subtract = (number1, number2) => {
+  return number1 - number2;
+};
+const multiply = (number1, number2) => {
+  return number1 * number2;
+};
+const divide = (number1, number2) => {
+  return number1 / number2;
 };
 
-const dooper = function () {
-  var ratings = [2, 3, 1, 4, 5];
+const operate = (operator, number1, number2) => {
+  if (operator === '+') return add(number1, number2);
+  if (operator === '-') return subtract(number1, number2);
+  if (operator === '*') return multiply(number1, number2);
+  if (operator === '/') return divide(number1, number2);
+};
 
-  // You should return an array containing only the largest rating. Remember that reduce always
-  // returns an array with one item.
-  return ratings.reduce((acc, cur) => {
-    if (acc > cur) {
-      return acc;
-    } else return cur;
+const btnEl = document.querySelectorAll('.btn');
+const calculationEl = document.querySelector('.calculation');
+
+let sum = {
+  number1: 0,
+  number2: false,
+  operator: false,
+  result: false,
+};
+
+let screen = [];
+let storage = [];
+
+const getFirstNumber = () => {};
+
+btnEl.forEach(button => {
+  button.addEventListener('click', e => {
+    // You’ll need to store the first number that is input into the calculator when a user presses an operator,
+    // and also save which operation has been chosen and then operate() on them when the user presses the “=” key.
+
+    screen.push(button.dataset.button);
+    storage.push(button.dataset.button);
+
+    calculationEl.textContent = screen.join('');
+    if (sum.result) {
+      if (
+        button.dataset.button === '+' ||
+        button.dataset.button === '*' ||
+        button.dataset.button === '-' ||
+        button.dataset.button === '/'
+      ) {
+        sum.number1 = sum.result;
+        sum.operator = button.dataset.button;
+        storage = [];
+      }
+    }
+    if (
+      (button.dataset.button === '+' ||
+        button.dataset.button === '*' ||
+        button.dataset.button === '-' ||
+        button.dataset.button === '/') &&
+      !sum.result
+    ) {
+      sum.number1 = +storage.join('').slice(0, -1);
+      sum.operator = storage.join('').slice(-1);
+      storage = [];
+    }
+    if (button.dataset.button === '=') {
+      sum.number2 = +storage.join('').slice(0, -1);
+      storage = [];
+      let calculatedResult = operate(sum.operator, sum.number1, sum.number2);
+
+      calculationEl.textContent = calculatedResult;
+      sum.result = calculatedResult;
+      screen = [];
+    }
+    console.log(storage, sum);
   });
-};
-// the url of the largest box art.
-const e = function () {
-  var boxarts = [
-    {
-      width: 200,
-      height: 200,
-      url: 'http://cdn-0.nflximg.com/images/2891/Fracture200.jpg',
-    },
-    {
-      width: 150,
-      height: 200000,
-      url: 'http://cdn-0.nflximg.com/images/2891/Fracture150.jpg',
-    },
-    {
-      width: 3000,
-      height: 200,
-      url: 'http://cdn-0.nflximg.com/images/2891/Fracture300.jpg',
-    },
-    {
-      width: 425,
-      height: 150,
-      url: 'http://cdn-0.nflximg.com/images/2891/Fracture425.jpg',
-    },
-  ];
-
-  const trytoo = boxarts.reduce((acc, cur) => {
-    if (acc.width * acc.height > cur.width * cur.height) return acc;
-    else return cur;
-  });
-
-  return trytoo.url;
-};
+});
