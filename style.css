@@ -24,7 +24,8 @@ body {
 /* ////Main container /////////// */
 
 .container {
-  width: 800px;
+  width: 720px;
+  height: 90vh;
   font-size: 5rem;
   display: grid;
   grid-template-columns: 1fr;
@@ -41,6 +42,7 @@ body {
 .calculations--container {
   display: grid;
   width: 100%;
+
   grid-template-rows: 1fr 3fr;
   border: 6px solid black;
   border-radius: var(--border-radius);
@@ -50,8 +52,7 @@ body {
 
 .running-calculation {
   font-size: 28px;
-  margin: 4px;
-  padding-right: 10px;
+
   justify-self: end;
 }
 
@@ -68,6 +69,7 @@ body {
 .buttons--container {
   display: grid;
   width: 100%;
+
   grid-template-columns: 3fr 2fr;
 
   border: 6px solid black;
@@ -87,15 +89,9 @@ body {
 .btn {
   justify-self: center;
   align-self: center;
-  font-size: 4rem;
+  font-size: 3rem;
   height: 80%;
   width: 80%;
   border-radius: var(--border-radius);
   cursor: pointer;
-}
-.btn--clear {
-  grid-column: 2/-1;
-}
-.btn--equals {
-  grid-column: 1/-1;
 }

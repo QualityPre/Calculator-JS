@@ -1,80 +1,116 @@
 'use strict';
-const add = (number1, number2) => {
-  return number1 + number2;
-};
-const subtract = (number1, number2) => {
-  return number1 - number2;
-};
-const multiply = (number1, number2) => {
-  return number1 * number2;
-};
-const divide = (number1, number2) => {
-  return number1 / number2;
-};
+const numberBtnsEl = document.querySelectorAll('[data-number]');
+const operationBtnsEl = document.querySelectorAll('[data-operation]');
+const equalBtnEl = document.querySelector('[data-equals]');
+const deleteBtnEl = document.querySelector('[data-delete]');
+const acBtnEl = document.querySelector('[data-clear]');
+const previousCalculationEl = document.querySelector(
+  '[data-previous-calculation ]'
+);
+const currentCalculationEl = document.querySelector(
+  '[data-current-calculation ]'
+);
 
-const operate = (operator, number1, number2) => {
-  if (operator === '+') return add(number1, number2);
-  if (operator === '-') return subtract(number1, number2);
-  if (operator === '*') return multiply(number1, number2);
-  if (operator === '/') return divide(number1, number2);
-};
+class Calculator {
+  constructor(previousCalculationEl, currentCalculationEl) {
+    this.previousCalculationEl = previousCalculationEl;
+    this.currentCalculationEl = currentCalculationEl;
+    this.allClear();
+  }
 
-const btnEl = document.querySelectorAll('.btn');
-const calculationEl = document.querySelector('.calculation');
+  allClear() {
+    this.currentCalculation = '';
+    this.prevCalculation = '';
+    this.operation = undefined;
+  }
 
-let sum = {
-  number1: 0,
-  number2: false,
-  operator: false,
-  result: false,
-};
+  delete() {
+    this.currentCalculation = this.currentCalculation.toString().slice(0, -1);
+  }
 
-let screen = [];
-let storage = [];
+  gettingNumber(number) {
+    if (number === '.' && this.currentCalculation.includes('.')) return;
+    this.currentCalculation =
+      this.currentCalculation.toString() + number.toString();
+  }
 
-const getFirstNumber = () => {};
-
-btnEl.forEach(button => {
-  button.addEventListener('click', e => {
-    // You’ll need to store the first number that is input into the calculator when a user presses an operator,
-    // and also save which operation has been chosen and then operate() on them when the user presses the “=” key.
-
-    screen.push(button.dataset.button);
-    storage.push(button.dataset.button);
-
-    calculationEl.textContent = screen.join('');
-    if (sum.result) {
-      if (
-        button.dataset.button === '+' ||
-        button.dataset.button === '*' ||
-        button.dataset.button === '-' ||
-        button.dataset.button === '/'
-      ) {
-        sum.number1 = sum.result;
-        sum.operator = button.dataset.button;
-        storage = [];
-      }
+  operate(operation) {
+    if (this.currentCalculation === '') return;
+    if (this.prevCalculation !== '') {
+      this.compute();
     }
-    if (
-      (button.dataset.button === '+' ||
-        button.dataset.button === '*' ||
-        button.dataset.button === '-' ||
-        button.dataset.button === '/') &&
-      !sum.result
-    ) {
-      sum.number1 = +storage.join('').slice(0, -1);
-      sum.operator = storage.join('').slice(-1);
-      storage = [];
-    }
-    if (button.dataset.button === '=') {
-      sum.number2 = +storage.join('').slice(0, -1);
-      storage = [];
-      let calculatedResult = operate(sum.operator, sum.number1, sum.number2);
+    this.operation = operation;
+    this.prevCalculation = this.currentCalculation;
+    this.currentCalculation = '';
+  }
 
-      calculationEl.textContent = calculatedResult;
-      sum.result = calculatedResult;
-      screen = [];
+  compute() {
+    let calculation;
+    const prev = parseFloat(this.prevCalculation);
+    const current = parseFloat(this.currentCalculation);
+    if (isNaN(prev) || isNaN(current)) return;
+    switch (this.operation) {
+      case '+':
+        calculation = prev + current;
+        break;
+      case '-':
+        calculation = prev - current;
+        break;
+      case '*':
+        calculation = prev * current;
+        break;
+      case '/':
+        calculation = prev / current;
+        break;
+      default:
+        return;
     }
-    console.log(storage, sum);
+    this.currentCalculation = calculation;
+    this.operation = undefined;
+    this.prevCalculation = '';
+  }
+
+  updateDisplay() {
+    this.currentCalculationEl.innerText = this.currentCalculation;
+    if (this.operation != null) {
+      this.previousCalculationEl.innerText = `${this.prevCalculation}${this.operation}`;
+    } else {
+      this.previousCalculationEl.innerText = '';
+    }
+  }
+}
+
+//creating a calculator object using the class
+
+const calculator = new Calculator(previousCalculationEl, currentCalculationEl);
+
+// when number buttons and decimal point get clicked...
+
+numberBtnsEl.forEach(btn => {
+  btn.addEventListener('click', () => {
+    calculator.gettingNumber(btn.innerText);
+    calculator.updateDisplay();
   });
+});
+
+operationBtnsEl.forEach(btn => {
+  btn.addEventListener('click', () => {
+    calculator.operate(btn.innerText);
+    calculator.updateDisplay();
+  });
+});
+
+equalBtnEl.addEventListener('click', btn => {
+  calculator.compute();
+  calculator.updateDisplay();
+});
+
+acBtnEl.addEventListener('click', btn => {
+  calculator.allClear();
+  calculator.updateDisplay();
+});
+
+deleteBtnEl.addEventListener('click', btn => {
+  calculator.delete();
+  calculator.updateDisplay();
 });
