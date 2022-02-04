@@ -114,3 +114,39 @@ deleteBtnEl.addEventListener('click', btn => {
   calculator.delete();
   calculator.updateDisplay();
 });
+
+// keypresses
+const keyPressedNumbersAllowed = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '.',
+];
+const operationsAllowed = ['*', '/', '+', '-'];
+
+window.addEventListener('keydown', event => {
+  if (keyPressedNumbersAllowed.includes(event.key)) {
+    calculator.gettingNumber(event.key);
+    calculator.updateDisplay();
+  }
+  if (operationsAllowed.includes(event.key)) {
+    calculator.operate(event.key);
+    calculator.updateDisplay();
+  }
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    calculator.compute();
+    calculator.updateDisplay();
+  }
+  if (event.key === 'Backspace') {
+    calculator.delete();
+    calculator.updateDisplay();
+  }
+});
